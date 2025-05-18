@@ -1,0 +1,32 @@
+Complete-Project/
+    /src/
+        graphql/ 
+        config
+              index.js
+        controllers
+        graphql/
+               mutations/
+                        PostMutation.js
+                        UserMutation.js
+               queries/
+                      PostQuery.js
+                      UserQuery.js
+               types/
+                    PostType.js
+                    UserType.js    
+               schema.js
+        middlewares
+        models/
+            PostModel.js
+            UserModel.js
+        notes
+        queues
+        servives
+        utils
+        workers
+    app.js
+    .env
+    package-lock.json
+    package.json
+
+
