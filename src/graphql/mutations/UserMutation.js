@@ -1,12 +1,9 @@
-const {
-  GraphQLString,
-  GraphQLBoolean,
-  GraphQLID,
-  GraphQLNonNull,
-} = require('graphql');
+const {GraphQLString,GraphQLBoolean,GraphQLID,GraphQLNonNull} = require('graphql');
 
 const UserType = require('../types/UserType');
 const User = require('../../models/UserModel');
+const { getJSON, setJSON, delKey } = require('../../utils/redisJson');
+
 
 module.exports = {
   createUser: {
@@ -18,9 +15,11 @@ module.exports = {
       phone: { type: new GraphQLNonNull(GraphQLString) },
       password_hash: { type: new GraphQLNonNull(GraphQLString) },
     },
-    resolve(_, args) {
+    async resolve(_, args) {
       const user = new User(args);
-      return user.save();
+      const savedUser = await user.save();
+      await setJSON(`user:${savedUser.id}`, savedUser);
+      return savedUser;
     },
   },
 
@@ -30,11 +29,9 @@ module.exports = {
       id: { type: GraphQLID },
     },
     async resolve(_, args) {
-      return User.findByIdAndUpdate(
-        args.id,
-        { is_deleted: true, deleted_at: new Date() },
-        { new: true }
-      );
+      const updatedUser = User.findByIdAndUpdate(args.id,{ is_deleted: true, deleted_at: new Date() },{ new: true });
+      await delKey(`user:${args.id}`);
+      return updatedUser;
     },
   },
 };

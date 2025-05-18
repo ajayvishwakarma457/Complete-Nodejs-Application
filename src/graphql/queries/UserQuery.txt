@@ -1,0 +1,21 @@
+
+query {
+  users {
+    id
+    firstname
+    # Add other fields defined in your UserType
+  }
+}
+
+
+query {
+  user(id: "682988646829ade68a8bc0a6") {
+    id
+    firstname
+    username
+    email
+    phone
+    biography
+    photo
+  }
+}

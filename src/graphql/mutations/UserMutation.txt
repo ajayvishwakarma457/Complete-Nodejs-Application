@@ -1,0 +1,25 @@
+
+mutation {
+  createUser(
+    firstname: "Purn Brahm"
+    username: "purna"
+    email: "purnaam@example.com"
+    phone: "8652248919"
+    password_hash: "securehash"
+  ) {
+    id
+    firstname
+    email
+  }
+}
+
+
+mutation {
+  deleteUser(id: "6829a2f1fcb8dd3f39116927") {
+    id
+    firstname
+    username
+    is_deleted
+    deleted_at
+  }
+}
