@@ -3,6 +3,7 @@ const {GraphQLString,GraphQLID,GraphQLNonNull} = require('graphql');
 const UserType = require('../types/UserType');
 const User = require('../../models/UserModel');
 const { setJSON, delKey } = require('../../utils/redisJson');
+const produceMessage = require('../../services/kafkaProducer');
 
 
 module.exports = {
@@ -22,6 +23,8 @@ module.exports = {
        const userForCache = savedUser.toObject();
        userForCache.id = savedUser._id.toString();
        await setJSON(`user:${savedUser.id}`, userForCache, 300);
+
+       await produceMessage('user-events', {event: 'USER_CREATED',data: savedUser});
 
       return savedUser;
     },

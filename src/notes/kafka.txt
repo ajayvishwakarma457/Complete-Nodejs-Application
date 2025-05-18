@@ -1,0 +1,27 @@
+Step 1 npm install kafkajs
+
+🐘 Step 2: Start ZooKeeper
+    ZooKeeper is essential for managing the Kafka cluster. Run the following command to start a ZooKeeper container:
+
+    bash:
+    docker run -p 2181:2181 zookeeper
+
+
+📦 Step 3: Start Kafka
+    Once ZooKeeper is running, start the Kafka broker container. Replace <YOUR_HOST_IP> with your machine's IP address:
+    Medium
+
+    bash:
+    docker run -p 9092:9092 \
+    -e KAFKA_ZOOKEEPER_CONNECT=<YOUR_HOST_IP>:2181 \
+    -e KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://<YOUR_HOST_IP>:9092 \
+    -e KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR=1 \
+    confluentinc/cp-kafka
+
+
+    Exmple: 
+    docker run -p 9092:9092 \
+    -e KAFKA_ZOOKEEPER_CONNECT=192.168.0.104:2181 \
+    -e KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://192.168.0.104:9092 \
+    -e KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR=1 \
+    confluentinc/cp-kafka
