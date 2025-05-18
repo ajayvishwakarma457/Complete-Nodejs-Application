@@ -1,4 +1,4 @@
-const {GraphQLString,GraphQLBoolean,GraphQLID,GraphQLNonNull} = require('graphql');
+const {GraphQLString,GraphQLID,GraphQLNonNull} = require('graphql');
 
 const UserType = require('../types/UserType');
 const User = require('../../models/UserModel');
@@ -22,7 +22,7 @@ module.exports = {
        const userForCache = savedUser.toObject();
        userForCache.id = savedUser._id.toString();
        await setJSON(`user:${savedUser.id}`, userForCache, 300);
-       
+
       return savedUser;
     },
   },
