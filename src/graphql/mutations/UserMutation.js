@@ -2,7 +2,7 @@ const {GraphQLString,GraphQLBoolean,GraphQLID,GraphQLNonNull} = require('graphql
 
 const UserType = require('../types/UserType');
 const User = require('../../models/UserModel');
-const { getJSON, setJSON, delKey } = require('../../utils/redisJson');
+const { setJSON, delKey } = require('../../utils/redisJson');
 
 
 module.exports = {
@@ -18,7 +18,11 @@ module.exports = {
     async resolve(_, args) {
       const user = new User(args);
       const savedUser = await user.save();
-      await setJSON(`user:${savedUser.id}`, savedUser);
+
+       const userForCache = savedUser.toObject();
+       userForCache.id = savedUser._id.toString();
+       await setJSON(`user:${savedUser.id}`, userForCache, 300);
+       
       return savedUser;
     },
   },

@@ -1,0 +1,17 @@
+
+query {
+   posts {
+    id
+    caption
+    media_url
+    # Add other fields defined in your UserType
+  }
+}
+
+
+query {
+  post(id: "682988646829ade68a8bc0a6") {
+    id
+    caption
+  }
+}

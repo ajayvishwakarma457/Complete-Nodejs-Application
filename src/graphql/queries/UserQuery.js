@@ -14,13 +14,15 @@ module.exports = {
       const cachedUser = await getJSON(cacheKey);
 
       if (cachedUser) {
-        console.log('Cahced data');
         return cachedUser;
       };
 
-      const freshUser = await User.findById(args.id);
-      await setJSON(cacheKey, freshUser, 300); // Cache for 5 min
-      console.log('freshed data');
+       const freshUser = await User.findById(args.id);
+
+       const userForCache = freshUser.toObject();
+       userForCache.id = freshUser._id.toString(); 
+       await setJSON(cacheKey, userForCache, 300); 
+      
       return freshUser;
     },
   },
@@ -33,13 +35,18 @@ module.exports = {
       const cachedUsers = await getJSON(cacheKey);
 
       if (cachedUsers) {
-        console.log('Cahced data');
         return cachedUsers;
       };
 
       const freshUsers = await User.find({});
-      await setJSON(cacheKey, freshUsers, 300); // Cache for 5 min
-      console.log('freshed data');
+
+      const usersForCache = freshUsers.map(user => {
+        const obj = user.toObject();   // convert to plain JS object
+        obj.id = user._id.toString();  // manually add the `id` field
+        return obj;
+      });
+
+      await setJSON(cacheKey, usersForCache, 300); // Cache for 5 min
       return freshUsers;
     },
   }
