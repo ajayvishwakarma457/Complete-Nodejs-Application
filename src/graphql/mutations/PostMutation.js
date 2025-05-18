@@ -6,7 +6,7 @@ const {
 
 const PostType = require('../types/PostType');
 const Post = require('../../models/PostModel');
-const { setJSON } = require('../../utils/redisJson');
+const { setJSON, delKey } = require('../../utils/redisJson');
 
 module.exports = {
   createPost: {
