@@ -1,0 +1,24 @@
+
+mutation {
+  createPost(
+    caption: "Trying my hand at photography 📸",
+    media_url: "https://example.com/image.jpg",
+    userId: "6829d3ea48a42d86d18bf01c"
+  ) {
+    id
+    caption
+    media_url
+    user {
+      id
+      username
+    }
+  }
+}
+
+
+mutation {
+  deletePost(id: "68298c5e7d77e027287a16e4") {
+    id
+    caption
+  }
+}
