@@ -5,6 +5,19 @@ const connectDB = require('./src/config');
 const helmet = require('helmet');
 const { graphqlHTTP } = require('express-graphql');
 const schema = require('./src/graphql/schema');
+const agenda = require('./src/queues/agenda');
+const loadJobs = require('./src/queues/jobLoader');
+
+// Load job definitions
+loadJobs(agenda);
+
+(async () => {
+  await agenda.start();
+
+  // Schedule or trigger jobs
+  await agenda.now('say hello');
+  // await agenda.every('5 minutes', 'say hello');
+})();
 
 const app = express();
 connectDB();
